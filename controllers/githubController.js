@@ -22,6 +22,45 @@ class Push {
 			res.status(500).json({ error });
 		}
 	};
+
+	static countCommitAndPush = async (req, res) => {
+		try {
+			const { orgName, repos, username } = req.query;
+
+			let condition = {};
+
+			if (orgName) {
+				condition = { ...condition, "organization.login": orgName };
+			}
+
+			if (repos) {
+				const _repos = repos.split(",");
+				condition = { ...condition, "repository.name": _repos };
+			}
+
+			if (username) {
+				condition = { ...condition, "pusher.name": username };
+			}
+
+			const pushes = await PushModel.findAll(condition);
+			let commitCount = 0;
+			pushes.forEach((push) => {
+				push.commits.forEach((commit) => {
+					commitCount++;
+				});
+			});
+			const response = {
+				orgName,
+				repos,
+				username,
+				pushCount: pushes.length,
+				commitCount: commitCount,
+			};
+			res.status(200).json(response);
+		} catch (error) {
+			res.status(500).json({ error });
+		}
+	};
 }
 
 module.exports = Push;

@@ -10,9 +10,10 @@ class Push {
 		}
 	}
 
-	static async findAll() {
+	static async findAll(payload) {
 		try {
-			const push = await PushModel.find();
+			const _payload = payload || {};
+			const push = await PushModel.find(_payload);
 			return push;
 		} catch (error) {
 			throw error;
