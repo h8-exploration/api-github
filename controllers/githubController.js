@@ -1,7 +1,7 @@
 const PushModel = require("../models/PushModel");
 
 class Push {
-	static githubPushEvent = async (req, res, next) => {
+	static githubPushEvent = async (req, res) => {
 		try {
 			const push = await PushModel.insertOne(req.body);
 			res.status(201).json({ message: "successfully" });
@@ -11,6 +11,15 @@ class Push {
 				error
 			);
 			res.status(500).json({ message: "Internal server error" });
+		}
+	};
+
+	static findAll = async (_, res) => {
+		try {
+			const pushes = await PushModel.findAll();
+			res.status(200).json(pushes);
+		} catch (error) {
+			res.status(500).json({ error });
 		}
 	};
 }
