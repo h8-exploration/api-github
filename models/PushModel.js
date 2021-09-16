@@ -13,7 +13,7 @@ class Push {
 	static async findAll(payload) {
 		try {
 			const _payload = payload || {};
-			const push = await PushModel.find(_payload);
+			const push = await PushModel.find(_payload).sort({ createdAt: "desc" });
 			return push;
 		} catch (error) {
 			throw error;
