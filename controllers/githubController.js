@@ -53,8 +53,8 @@ class Push {
 				orgName,
 				repos,
 				username,
-				pushCount: pushes.length,
-				commitCount: commitCount,
+				push: pushes.length,
+				commit: commitCount,
 			};
 			res.status(200).json(response);
 		} catch (error) {
