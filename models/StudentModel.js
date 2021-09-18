@@ -12,7 +12,10 @@ class Student {
 
 	static async findAll(payload = {}) {
 		try {
-			const student = await StudentModel.find(payload).sort({ createdAt: "desc" });
+			const student = await StudentModel.find({
+				...payload,
+				isDelete: false,
+			}).sort({ createdAt: "desc" });
 			return student;
 		} catch (error) {
 			throw error;
