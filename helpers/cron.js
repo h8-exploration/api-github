@@ -2,7 +2,7 @@ const cron = require("node-cron");
 const getCommitAndPushStat = require("./getCommitAndPushStat");
 
 const task = cron.schedule(
-	String(process.env.CRON_SCHEDULE),
+	"0 0 8 * * *",
 	() => {
 		getCommitAndPushStat();
 	},
