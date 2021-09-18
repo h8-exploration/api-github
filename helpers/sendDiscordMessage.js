@@ -1,23 +1,20 @@
 const { addTask } = require("./bull");
 
-const sendDiscordMessage = () => {
-	//  get student data
-	// get push data
-	//  add data to queue
-	const payload = {
-		content: "Hi there from <@707500844043599884>",
+const sendDiscordMessage = (payload) => {
+	const _payload = {
+		content: `Hi <@${payload.discordId}>, berikut statistik commit dan push kamu. Sepertinya kamu perlu lebih giat lagi. Semangat!`,
 		tts: false,
 		embeds: [
 			{
 				title: "Github Stat",
-				description: "Push: 0; Commit: 0;",
+				description: `Push: ${payload.push}; Commit: ${payload.commit};`,
 			},
 		],
 		allowed_mentions: {
 			parse: [],
 		},
 	};
-	addTask(payload);
+	addTask(_payload);
 };
 
 module.exports = sendDiscordMessage;

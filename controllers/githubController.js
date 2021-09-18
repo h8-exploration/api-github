@@ -1,5 +1,4 @@
 const PushModel = require("../models/PushModel");
-
 class Push {
 	static githubPushEvent = async (req, res) => {
 		try {
@@ -14,9 +13,12 @@ class Push {
 		}
 	};
 
-	static findAll = async (_, res) => {
+	static findAll = async (req, res) => {
 		try {
-			const pushes = await PushModel.findAll();
+			const { username } = req.query;
+			let condition = {};
+			if (username) condition = { ...condition, "pusher.name": username };
+			const pushes = await PushModel.findAll(condition);
 			res.status(200).json(pushes);
 		} catch (error) {
 			res.status(500).json({ error });
@@ -45,9 +47,7 @@ class Push {
 			const pushes = await PushModel.findAll(condition);
 			let commitCount = 0;
 			pushes.forEach((push) => {
-				push.commits.forEach((commit) => {
-					commitCount++;
-				});
+				commitCount += push.commits.length;
 			});
 			const response = {
 				orgName,

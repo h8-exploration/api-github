@@ -1,10 +1,10 @@
 const cron = require("node-cron");
-const sendDiscordMessage = require("./sendDiscordMessage");
+const getCommitAndPushStat = require("./getCommitAndPushStat");
 
 const task = cron.schedule(
 	process.env.CRON_SCHEDULE,
 	() => {
-		sendDiscordMessage();
+		getCommitAndPushStat();
 	},
 	{
 		scheduled: false,
