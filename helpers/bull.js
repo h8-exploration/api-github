@@ -28,7 +28,7 @@ sendDiscordMessageQueue.process(function(job, done) {
 			});
 		})
 		.catch((err) => {
-			done(err.response.data);
+			done(new Error("error sendDiscordMessage"));
 		});
 });
 
