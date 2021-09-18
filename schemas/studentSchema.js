@@ -13,7 +13,7 @@ const studentSchema = mongoose.model(
 			nickname: { type: String, default: null },
 		},
 		wakatime: {
-			api: { type: String, default: null, unique: true },
+			api: { type: String, default: null },
 		},
 		discord: {
 			id: { type: String, default: null, unique: true, required: true },
