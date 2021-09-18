@@ -7,7 +7,7 @@ const studentSchema = mongoose.model(
 		name: { type: String, default: null },
 		email: { type: String, default: null, unique: true },
 		github: {
-			username: { type: String, default: null, unique: true },
+			username: { type: String, default: null, unique: true, required: true },
 		},
 		zoom: {
 			nickname: { type: String, default: null },
@@ -16,7 +16,7 @@ const studentSchema = mongoose.model(
 			api: { type: String, default: null, unique: true },
 		},
 		discord: {
-			id: { type: String, default: null, unique: true },
+			id: { type: String, default: null, unique: true, required: true },
 		},
 		isActive: { type: Boolean, default: true },
 		isDelete: { type: Boolean, default: false },
