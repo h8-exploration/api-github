@@ -1,9 +1,8 @@
 const cron = require("node-cron");
 const sendDiscordMessage = require("./sendDiscordMessage");
-const bull = require("../helpers/bull");
 
 const task = cron.schedule(
-	"* * * * * *",
+	process.env.CRON_SCHEDULE,
 	() => {
 		sendDiscordMessage();
 	},

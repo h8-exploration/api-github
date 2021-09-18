@@ -34,17 +34,17 @@ sendDiscordMessageQueue.process(function(job, done) {
 
 // listener
 sendDiscordMessageQueue.on("completed", function(job, result) {
-	console.log(
-		"🚀 ~ file: bull.js ~ line 34 ~ sendDiscordMessageQueue.on ~ result",
-		result
-	);
+	// console.log(
+	// 	"🚀 ~ file: bull.js ~ line 34 ~ sendDiscordMessageQueue.on ~ result",
+	// 	result
+	// );
 });
 
 sendDiscordMessageQueue.on("failed", function(job, result) {
-	console.log(
-		"🚀 ~ file: bull.js ~ line 41 ~ sendDiscordMessageQueue.on ~ result",
-		result
-	);
+	// console.log(
+	// 	"🚀 ~ file: bull.js ~ line 41 ~ sendDiscordMessageQueue.on ~ result",
+	// 	result
+	// );
 });
 
 module.exports = { sendDiscordMessageQueue, addTask };
