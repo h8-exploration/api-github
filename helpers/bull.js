@@ -1,9 +1,10 @@
 const Queue = require("bull");
+const axios = require("axios");
 
 var sendDiscordMessageQueue = new Queue("sendDiscordMessage", {
-	port: 16039,
-	host: "redis-16039.c292.ap-southeast-1-1.ec2.cloud.redislabs.com",
-	password: "8ApUJyB2Efw3wTgmYvtfFDUImi701bcg",
+	port: process.env.REDIS_PORT,
+	host: process.env.REDIS_HOST,
+	password: process.env.REDIS_PASSWORD,
 });
 
 // producer
@@ -13,13 +14,22 @@ const addTask = (payload) => {
 
 // customer
 sendDiscordMessageQueue.process(function(job, done) {
-	const error = false;
-
-	if (!error)
-		done(null, {
-			message: `Send message to discord has been successfully`,
+	axios({
+		url: `${process.env.DISCORD_API_URL}/channels/${process.env.DISCORD_CHANNEL_ID}/messages`,
+		method: "POST",
+		headers: {
+			Authorization: `${process.env.DISCORD_CLIENT_ID}`,
+		},
+		data: job.data,
+	})
+		.then(({ data }) => {
+			done(null, {
+				data,
+			});
+		})
+		.catch((err) => {
+			done(err.response.data);
 		});
-	else done("send message to discord failed");
 });
 
 // listener
