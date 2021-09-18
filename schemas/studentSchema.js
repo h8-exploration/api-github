@@ -5,7 +5,7 @@ const studentSchema = mongoose.model(
 	"Student",
 	new Schema({
 		name: { type: String, default: null },
-		email: { type: String, default: null, unique: true },
+		email: { type: String, default: null, unique: true, required: true },
 		github: {
 			username: { type: String, default: null, unique: true, required: true },
 		},
