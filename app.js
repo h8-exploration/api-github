@@ -1,7 +1,14 @@
 const express = require("express");
 require("dotenv").config();
-const router = require("./router");
+const routes = require("./router");
 const cors = require("cors");
+const cron = require("./helpers/cron");
+const { createBullBoard } = require("bull-board");
+const { BullAdapter } = require("bull-board/bullAdapter");
+
+const { sendDiscordMessageQueue } = require("./helpers/bull");
+
+const { router } = createBullBoard([new BullAdapter(sendDiscordMessageQueue)]);
 
 const app = express();
 
@@ -13,6 +20,9 @@ app.get("/", (_, res) => {
 	res.status(200).json({ message: "server running" });
 });
 
-app.use(router);
+cron.start();
+
+app.use("/admin/queues", router);
+app.use(routes);
 
 module.exports = app;
