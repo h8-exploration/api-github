@@ -17,7 +17,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (_, res) => {
-	res.status(200).json({ message: "server running" });
+	res
+		.status(200)
+		.json({ message: "server running", schedule: process.env.CRON_SCHEDULE });
 });
 
 cron.start();
