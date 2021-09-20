@@ -3,6 +3,8 @@ require("dotenv").config();
 const routes = require("./router");
 const cors = require("cors");
 const cron = require("./helpers/cron");
+const wakatimeSchedule = require("./crons/wakatimeCron");
+const sendWakatimeSummaryToDiscordCron = require("./crons/sendWakatimeSummaryToDiscordCron");
 const { createBullBoard } = require("bull-board");
 const { BullAdapter } = require("bull-board/bullAdapter");
 
@@ -23,6 +25,8 @@ app.get("/", (_, res) => {
 });
 
 cron.start();
+wakatimeSchedule.start();
+sendWakatimeSummaryToDiscordCron.start();
 
 app.use("/admin/queues", router);
 app.use(routes);
