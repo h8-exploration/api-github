@@ -2,7 +2,7 @@ const Queue = require("bull");
 const axios = require("axios");
 
 const sendWakatimeSummaryToDiscordQueue = new Queue(
-	"sendWakatimeSummaryToDiscord",
+	"sendWakatimeSummaryToDiscordQueue",
 	{
 		port: process.env.REDIS_PORT,
 		host: process.env.REDIS_HOST,
