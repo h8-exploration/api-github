@@ -24,9 +24,9 @@ app.get("/", (_, res) => {
 		.json({ message: "server running", schedule: process.env.CRON_SCHEDULE });
 });
 
-// cron.start();
-// wakatimeSchedule.start();
-// sendWakatimeSummaryToDiscordCron.start();
+cron.start();
+wakatimeSchedule.start();
+sendWakatimeSummaryToDiscordCron.start();
 
 app.use("/admin/queues", router);
 app.use(routes);
