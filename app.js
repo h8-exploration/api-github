@@ -2,16 +2,21 @@ const express = require("express");
 require("dotenv").config();
 const routes = require("./router");
 const cors = require("cors");
-const cron = require("./helpers/cron");
-const wakatimeSchedule = require("./crons/wakatimeCron");
-const sendWakatimeSummaryToDiscordCron = require("./crons/sendWakatimeSummaryToDiscordCron");
-const sendGithubStatToDiscordCron = require("./crons/sendGithubStatToDiscordCron");
 const { createBullBoard } = require("bull-board");
 const { BullAdapter } = require("bull-board/bullAdapter");
 
-const { sendDiscordMessageQueue } = require("./helpers/bull");
+// cron
+const wakatimeSchedule = require("./crons/wakatimeCron");
+const sendWakatimeSummaryToDiscordCron = require("./crons/sendWakatimeSummaryToDiscordCron");
+const sendGithubStatToDiscordCron = require("./crons/sendGithubStatToDiscordCron");
+// queue
+const sendWakatimeSummaryToDiscordQueue = require("./queues/sendWakatimeSummaryToDiscordQueue");
+const sendGithubStatToDiscordQueue = require("./queues/sendGithubStatToDiscordQueue");
 
-const { router } = createBullBoard([new BullAdapter(sendDiscordMessageQueue)]);
+const { router } = createBullBoard([
+	new BullAdapter(sendWakatimeSummaryToDiscordQueue),
+	new BullAdapter(sendGithubStatToDiscordQueue),
+]);
 
 const app = express();
 
@@ -30,7 +35,6 @@ app.get("/", (_, res) => {
 	});
 });
 
-// cron.start();
 wakatimeSchedule.start();
 sendWakatimeSummaryToDiscordCron.start();
 sendGithubStatToDiscordCron.start();

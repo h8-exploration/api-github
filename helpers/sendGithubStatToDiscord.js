@@ -5,10 +5,9 @@ const sendGithubStatToDiscordQueue = require("../queues/sendGithubStatToDiscordQ
 
 const sendGithubStatToDiscord = async () => {
 	try {
-		// const yesterday = moment()
-		// 	.subtract(1, "day")
-		// 	.format("YYYY-MM-DD");
-		const yesterday = "2021-09-18";
+		const yesterday = moment()
+			.subtract(1, "day")
+			.format("YYYY-MM-DD");
 
 		let condition = {};
 		condition = {
@@ -66,8 +65,8 @@ const sendGithubStatToDiscord = async () => {
 				},
 			};
 
-			// if (commitCount < Number(process.env.GITHUB_MIN_COMMIT))
-			sendGithubStatToDiscordQueue.add(_payload);
+			if (commitCount < Number(process.env.GITHUB_MIN_COMMIT))
+				sendGithubStatToDiscordQueue.add(_payload);
 		});
 	} catch (error) {
 		console.log(
