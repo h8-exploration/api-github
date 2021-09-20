@@ -19,9 +19,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (_, res) => {
-	res
-		.status(200)
-		.json({ message: "server running", schedule: process.env.CRON_SCHEDULE });
+	res.status(200).json({
+		message: "server running",
+		discordGithubSchedule: process.env.CRON_SCHEDULE,
+		discordGithubSchedule: process.env.CRON_SCHEDULE,
+		discordWakatimeSchedule: process.env.DISCORD_WAKATIME_SCHEDULE,
+		wakatimeSchedule: process.env.WAKATIME_SCHEDULE,
+		minCommit: process.env.GITHUB_MIN_COMMIT,
+		minCoding: process.env.WAKATIME_MIN_CODING,
+	});
 });
 
 cron.start();

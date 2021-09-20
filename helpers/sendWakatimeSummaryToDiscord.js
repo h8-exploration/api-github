@@ -27,7 +27,7 @@ const sendWakatimeSummaryToDiscord = async () => {
 				summary.forEach((wakatime) => {
 					if (
 						Number(wakatime.cummulative_total.decimal) <
-						process.env.WAKATIME_MIN_CODING
+						Number(process.env.WAKATIME_MIN_CODING)
 					) {
 						let description = `${moment()
 							.subtract(1, "day")
