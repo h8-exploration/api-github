@@ -4,6 +4,7 @@ const routes = require("./router");
 const cors = require("cors");
 const cron = require("./helpers/cron");
 const wakatimeSchedule = require("./crons/wakatimeCron");
+const sendWakatimeSummaryToDiscordCron = require("./crons/sendWakatimeSummaryToDiscordCron");
 const { createBullBoard } = require("bull-board");
 const { BullAdapter } = require("bull-board/bullAdapter");
 
@@ -23,8 +24,9 @@ app.get("/", (_, res) => {
 		.json({ message: "server running", schedule: process.env.CRON_SCHEDULE });
 });
 
-cron.start();
-wakatimeSchedule.start();
+// cron.start();
+// wakatimeSchedule.start();
+// sendWakatimeSummaryToDiscordCron.start();
 
 app.use("/admin/queues", router);
 app.use(routes);
