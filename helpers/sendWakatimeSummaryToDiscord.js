@@ -9,14 +9,16 @@ const sendWakatimeSummaryToDiscord = async () => {
 			isActive: true,
 		});
 
-		const today = moment().format("YYYY-MM-DD");
+		const date = moment()
+			.subtract(1, "day")
+			.format("YYYY-MM-DD");
 
 		const wakatimeSummaryPromises = students.map((student) => {
 			return WakatimeSummaryModel.findAll({
 				"github.username": student.github.username,
 				createdAt: {
-					$gte: new Date(`${today}T00:00:00.000Z`),
-					$lt: new Date(`${today}T23:59:59.000Z`),
+					$gte: new Date(`${date}T00:00:00.000Z`),
+					$lt: new Date(`${date}T23:59:59.000Z`),
 				},
 			});
 		});
