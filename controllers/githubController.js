@@ -46,8 +46,20 @@ class Push {
 
 			const pushes = await PushModel.findAll(condition);
 			let commitCount = 0;
+			let commitMessageText = "";
+			let commitMessageAndAuthorText = "";
+			let commitMessages = [];
+			let commitMessagesAndAuthor = [];
 			pushes.forEach((push) => {
 				commitCount += push.commits.length;
+				push.commits.forEach((commit) => {
+					commitMessageText += `- ${commit.message} \n`;
+					commitMessageAndAuthorText += `- ${commit.committer.name}: ${commit.message} \n`;
+					commitMessages.push(commit.message);
+					commitMessagesAndAuthor.push(
+						`${commit.committer.name} - ${commit.message}`
+					);
+				});
 			});
 			const response = {
 				orgName,
@@ -55,6 +67,10 @@ class Push {
 				username,
 				push: pushes.length,
 				commit: commitCount,
+				commitMessages,
+				commitMessagesAndAuthor,
+				commitMessageText,
+				commitMessageAndAuthorText,
 			};
 			res.status(200).json(response);
 		} catch (error) {
