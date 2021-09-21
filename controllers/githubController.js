@@ -1,4 +1,5 @@
 const PushModel = require("../models/PushModel");
+const moment = require("moment");
 class Push {
 	static githubPushEvent = async (req, res) => {
 		try {
@@ -47,17 +48,21 @@ class Push {
 			const pushes = await PushModel.findAll(condition);
 			let commitCount = 0;
 			let commitMessageText = "";
-			let commitMessageAndAuthorText = "";
+			let commitMessageAndDateText = "";
 			let commitMessages = [];
-			let commitMessagesAndAuthor = [];
+			let commitMessagesAndDate = [];
 			pushes.forEach((push) => {
 				commitCount += push.commits.length;
 				push.commits.forEach((commit) => {
 					commitMessageText += `- ${commit.message} \n`;
-					commitMessageAndAuthorText += `- ${commit.committer.name}: ${commit.message} \n`;
+					commitMessageAndDateText += `- ${moment(commit.timestamp).format(
+						"ddd, DD-MM-YYYY hh:ss"
+					)}: ${commit.message} \n`;
 					commitMessages.push(commit.message);
-					commitMessagesAndAuthor.push(
-						`${commit.committer.name} - ${commit.message}`
+					commitMessagesAndDate.push(
+						`${moment(commit.timestamp).format("ddd, DD-MM-YYYY hh:ss")} - ${
+							commit.message
+						}`
 					);
 				});
 			});
@@ -68,9 +73,9 @@ class Push {
 				push: pushes.length,
 				commit: commitCount,
 				commitMessages,
-				commitMessagesAndAuthor,
+				commitMessagesAndDate,
 				commitMessageText,
-				commitMessageAndAuthorText,
+				commitMessageAndDateText,
 			};
 			res.status(200).json(response);
 		} catch (error) {
