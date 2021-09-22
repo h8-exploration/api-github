@@ -14,7 +14,7 @@ class WakatimeSummary {
 					...condition,
 					createdAt: {
 						$gte: new Date(`${startDate}T00:00:00.000Z`),
-						$lt: new Date(`${endDate}T23:59:59.000Z`),
+						$lt: new Date(`${startDate}T23:59:59.000Z`),
 					},
 				};
 			}
