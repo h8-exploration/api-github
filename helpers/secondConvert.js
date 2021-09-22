@@ -13,7 +13,14 @@ const secondConvert = (param) => {
 	if (seconds < 10) {
 		seconds = "0" + seconds;
 	}
-	return hours + " hrs " + minutes + " mins " + seconds + " secs";
+
+	let payload = "";
+	if (hours > 0) payload += hours + " hrs ";
+	if (minutes > 0) payload += minutes + " mins ";
+	if (seconds > 0) payload += seconds + " secs ";
+
+	// return hours + " hrs " + minutes + " mins " + seconds + " secs";
+	return payload;
 };
 
 module.exports = secondConvert;

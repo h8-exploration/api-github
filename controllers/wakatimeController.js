@@ -1,10 +1,15 @@
 const WakatimeSummaryModel = require("../models/WakatimeSummaryModel");
 const secondConvert = require("../helpers/secondConvert");
+const moment = require("moment");
 
 class WakatimeSummary {
 	static findAll = async (req, res) => {
 		try {
 			let { username, startDate, endDate } = req.query;
+			console.log(
+				"🚀 ~ file: wakatimeController.js ~ line 9 ~ WakatimeSummary ~ findAll= ~ startDate",
+				startDate
+			);
 			let condition = {};
 
 			if (username) condition = { ...condition, "github.username": username };
@@ -28,14 +33,28 @@ class WakatimeSummary {
 					},
 				};
 
+			let totalHours = 0;
+			let totalMinutes = 0;
 			let totalSeconds = 0;
 			let projects = [];
-			const wakatimes = await WakatimeSummaryModel.findAll(condition);
+			let projectsPerDayText = [];
+			const wakatimes = await WakatimeSummaryModel.findAll(condition, "asc");
 
-			wakatimes.forEach((wakatime) => {
+			wakatimes.forEach((wakatime, i) => {
 				wakatime.data.forEach((el) => {
+					totalHours += el.grand_total.hours;
+					totalMinutes += el.grand_total.minutes;
 					totalSeconds += el.grand_total.total_seconds;
+					let projectsText = `${moment(startDate)
+						.add(i, "day")
+						.format("ddd, MMM. Do YYYY")}\n${secondConvert(
+						el.grand_total.total_seconds
+					)}\n`;
+					let status = el.grand_total.hours >= 5 ? "✅ " : "🆘";
 					el.projects.forEach((project) => {
+						projectsText += `- ${project.name}: ${secondConvert(
+							project.total_seconds
+						)}\n`;
 						const checker = projects.find((prjct) => prjct.name === project.name);
 						if (!checker) {
 							projects.push({
@@ -63,17 +82,34 @@ class WakatimeSummary {
 							};
 						}
 					});
+					projectsPerDayText.push(`${projectsText} status: ${status}`);
 				});
+			});
+
+			const cumulative = {
+				hours: totalHours,
+				minutes: totalMinutes,
+				text: secondConvert(totalSeconds),
+			};
+			let projectsText = `${cumulative.text}\n`;
+			projects.forEach((el) => {
+				projectsText += `- ${el.name}: ${el.text}\n`;
 			});
 
 			res.status(200).json({
 				username,
 				startDate,
 				endDate,
-				cumulative: secondConvert(totalSeconds),
+				cumulative,
+				projectsPerDayText,
+				projectsText,
 				projects,
 			});
 		} catch (error) {
+			console.log(
+				"🚀 ~ file: wakatimeController.js ~ line 84 ~ WakatimeSummary ~ findAll= ~ error",
+				error
+			);
 			res.status(500).json(error);
 		}
 	};
