@@ -10,12 +10,12 @@ class WakatimeSummary {
 		}
 	}
 
-	static async findAll(payload = {}) {
+	static async findAll(payload = {}, sort = "desc") {
 		try {
 			const data = await WakatimeSummaryModel.find({
 				...payload,
 				isDelete: false,
-			}).sort({ createdAt: "desc" });
+			}).sort({ createdAt: sort });
 			return data;
 		} catch (error) {
 			throw error;
