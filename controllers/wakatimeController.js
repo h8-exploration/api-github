@@ -86,6 +86,11 @@ class WakatimeSummary {
 				});
 			});
 
+			if (totalMinutes >= 60) {
+				totalHours += Math.floor(totalMinutes / 60);
+				totalMinutes = totalMinutes % 60;
+			}
+
 			const cumulative = {
 				hours: totalHours,
 				minutes: totalMinutes,
