@@ -6,7 +6,7 @@ const { createBullBoard } = require("bull-board");
 const { BullAdapter } = require("bull-board/bullAdapter");
 
 // cron
-const wakatimeSchedule = require("./crons/wakatimeCron");
+const getWakatimeSummaryCron = require("./crons/getWakatimeSummaryCron");
 const sendWakatimeSummaryToDiscordCron = require("./crons/sendWakatimeSummaryToDiscordCron");
 const sendGithubStatToDiscordCron = require("./crons/sendGithubStatToDiscordCron");
 // queue
@@ -35,7 +35,7 @@ app.get("/", (_, res) => {
 	});
 });
 
-wakatimeSchedule.start();
+getWakatimeSummaryCron.start();
 sendWakatimeSummaryToDiscordCron.start();
 sendGithubStatToDiscordCron.start();
 
