@@ -44,14 +44,15 @@ sendGithubStatToDiscordQueue.process(function(job, done) {
 // listener
 sendGithubStatToDiscordQueue.on("completed", function(job, result) {
 	console.log(
-		"🚀 ~ file: sendGithubStatToDiscordQueue.js ~ line 46 ~ sendGithubStatToDiscordQueue.on ~ sendGithubStatToDiscordQueue"
+		"🚀 ~ file: sendGithubStatToDiscordQueue.js ~ line 46 ~ sendGithubStatToDiscordQueue.on ~ sendGithubStatToDiscordQueue",
+		"completed"
 	);
 });
 
 sendGithubStatToDiscordQueue.on("failed", function(job, result) {
 	console.log(
 		"🚀 ~ file: sendGithubStatToDiscordQueue.js ~ line 52 ~ sendGithubStatToDiscordQueue.on ~ sendGithubStatToDiscordQueue",
-		sendGithubStatToDiscordQueue
+		result
 	);
 });
 
